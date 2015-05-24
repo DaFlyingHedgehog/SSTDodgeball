@@ -5,20 +5,24 @@
  */
 package pages;
 
-import logic.SSTDodgeballStats;
-import java.io.IOException;
+import logic.*;
+import java.util.ArrayList;
 
 /**
  *
  * @author mama
  */
 public class CurrentStandings extends Page {
+    private LeaderboardModel model;
 
     /**
      * Creates new form CurrentStandings
      */
     public CurrentStandings() {
         initComponents();
+        String[] columns = {"Player", "Team", "Score"};
+        model = new LeaderboardModel(columns);
+        standings.setModel(model);
     }
 
     /**
@@ -30,40 +34,64 @@ public class CurrentStandings extends Page {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
+        menuButton = new javax.swing.JButton();
+        syncButton = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        standings = new javax.swing.JTable();
 
-        jButton1.setText("Menu");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        menuButton.setText("Menu");
+        menuButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                menuButtonActionPerformed(evt);
             }
         });
 
-        jLabel1.setText("jLabel1");
-
-        jButton2.setText("jButton2");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        syncButton.setText("Sync");
+        syncButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                syncButtonActionPerformed(evt);
             }
         });
+
+        standings.setAutoCreateRowSorter(true);
+        standings.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Player", "Team", "Score"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        standings.getTableHeader().setReorderingAllowed(false);
+        jScrollPane1.setViewportView(standings);
+        if (standings.getColumnModel().getColumnCount() > 0) {
+            standings.getColumnModel().getColumn(0).setResizable(false);
+            standings.getColumnModel().getColumn(1).setResizable(false);
+            standings.getColumnModel().getColumn(2).setResizable(false);
+        }
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(71, 71, 71)
-                .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 240, Short.MAX_VALUE)
-                .addComponent(jButton2)
+                .addComponent(menuButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 258, Short.MAX_VALUE)
+                .addComponent(syncButton)
                 .addGap(18, 18, 18))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -71,29 +99,34 @@ public class CurrentStandings extends Page {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jButton1))
+                        .addComponent(menuButton))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(24, 24, 24)
-                        .addComponent(jButton2)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel1)
-                .addContainerGap(233, Short.MAX_VALUE))
+                        .addComponent(syncButton)))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void menuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuButtonActionPerformed
         container.switchPage("Main Menu");
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_menuButtonActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        try {jLabel1.setText(SSTDodgeballStats.sync());}
-        catch (Exception e) {e.printStackTrace();}
-    }//GEN-LAST:event_jButton2ActionPerformed
+    private void syncButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_syncButtonActionPerformed
+        SSTDodgeballStats.sync();
+        ArrayList<ArrayList<String>> data = SSTDodgeballStats.getData();
+        model.clear();
+        for (int i = 0; i < data.size(); i++) {
+            model.addPlayer(data.get(i).toArray());
+        }
+    }//GEN-LAST:event_syncButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton menuButton;
+    private javax.swing.JTable standings;
+    private javax.swing.JButton syncButton;
     // End of variables declaration//GEN-END:variables
 }
