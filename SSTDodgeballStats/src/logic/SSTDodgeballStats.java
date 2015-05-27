@@ -50,13 +50,21 @@ public class SSTDodgeballStats
             Connection conn = DriverManager.getConnection("jdbc:sqlite:data.db");
             Statement stat = conn.createStatement();
             stat.executeUpdate("DROP TABLE IF EXISTS stats;");
-            stat.executeUpdate("CREATE TABLE stats (player, team, pointsgame, totalpoints);");
-            PreparedStatement prep = conn.prepareStatement("INSERT INTO stats VALUES (?, ?, ?, ?);");
+            stat.executeUpdate("CREATE TABLE stats (player, team, throws, hits, catches, hout, cout, sbonus, hit, games, pointsgame, totalpoints);");
+            PreparedStatement prep = conn.prepareStatement("INSERT INTO stats VALUES (?, ?, ?, ?, ?, ?,?,?,?,?,?,?);");
             for (ListEntry row : listFeed.getEntries()) {
                 prep.setString(1, row.getCustomElements().getValue("player"));
                 prep.setString(2, row.getCustomElements().getValue("team"));
-                prep.setString(3, row.getCustomElements().getValue("pointsgame"));
-                prep.setString(4, row.getCustomElements().getValue("totalpoints"));
+                prep.setString(3, row.getCustomElements().getValue("throws"));
+                prep.setString(4, row.getCustomElements().getValue("hits"));
+                prep.setString(5, row.getCustomElements().getValue("catches"));
+                prep.setString(6, row.getCustomElements().getValue("h-out"));
+                prep.setString(7, row.getCustomElements().getValue("c-out"));
+                prep.setString(8, row.getCustomElements().getValue("s-bonus"));
+                prep.setString(9, row.getCustomElements().getValue("hit"));
+                prep.setString(10, row.getCustomElements().getValue("games"));
+                prep.setString(11, row.getCustomElements().getValue("pointsgame"));
+                prep.setString(12, row.getCustomElements().getValue("totalpoints"));
                 prep.addBatch();
             }
             conn.setAutoCommit(false);
@@ -75,11 +83,19 @@ public class SSTDodgeballStats
             if (conn.getMetaData().getTables(null, null, "stats", null).next()) {
                 ResultSet rs = stat.executeQuery("SELECT * FROM stats;");
                 while (rs.next()) {
-                    Object[] player = new Object[4];
+                    Object[] player = new Object[12];
                     player[0] = rs.getString("player");
                     player[1] = rs.getString("team");
-                    player[2] = rs.getDouble("pointsgame");
-                    player[3] = rs.getInt("totalpoints");
+                    player[2] = rs.getInt("throws");
+                    player[3] = rs.getInt("hits");
+                    player[4] = rs.getInt("catches");
+                    player[5] = rs.getInt("hout");
+                    player[6] = rs.getInt("cout");
+                    player[7] = rs.getInt("sbonus");
+                    player[8] = rs.getInt("hit");
+                    player[9] = rs.getInt("games");
+                    player[10] = rs.getDouble("pointsgame");
+                    player[11] = rs.getInt("totalpoints");
                     data.add(player);
                 }
                 rs.close();

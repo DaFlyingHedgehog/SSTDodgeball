@@ -40,9 +40,25 @@ public class LeaderboardModel extends AbstractTableModel {
     public Class getColumnClass(int column) {
         switch (column) {
             case 2:
-                return Double.class;
+                return Integer.class;
             case 3:
                 return Integer.class;
+            case 4:
+                return Integer.class;
+            case 5:
+                return Integer.class;
+            case 6:
+                return Integer.class; 
+            case 7:
+                return Integer.class;
+            case 8:
+                return Integer.class;
+            case 9:
+                return Integer.class;
+            case 10:
+                return Double.class;
+            case 11:
+                return Integer.class;    
             default:
                 return String.class;
         }
