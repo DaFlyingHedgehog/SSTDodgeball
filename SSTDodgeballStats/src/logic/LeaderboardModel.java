@@ -37,6 +37,18 @@ public class LeaderboardModel extends AbstractTableModel {
     }
     
     @Override
+    public Class getColumnClass(int column) {
+        switch (column) {
+            case 2:
+                return Double.class;
+            case 3:
+                return Integer.class;
+            default:
+                return String.class;
+        }
+    }
+    
+    @Override
     public int getColumnCount() {
         return columns.length;
     }

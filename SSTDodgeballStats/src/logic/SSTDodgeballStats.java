@@ -15,8 +15,10 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.sql.SQLException;
 
-import java.net.*;
+import java.net.URL;
+import java.sql.DatabaseMetaData;
 import java.util.ArrayList;
 
 /**
@@ -31,6 +33,9 @@ public class SSTDodgeballStats
     private static final String EDIT_URL
             = "https://spreadsheets.google.com/feeds/list/19ZGRCaLC46T3mMHSHt3eFNLv0Yu0A5S_ZK83qP9FzWE/od6/private/full";
     private static SpreadsheetService service;
+    private static boolean authenticated;
+    
+    public static boolean isAuthenticated() {return authenticated;}
     
     public static void initialize() {
         try {Class.forName("org.sqlite.JDBC");}
@@ -45,45 +50,52 @@ public class SSTDodgeballStats
             Connection conn = DriverManager.getConnection("jdbc:sqlite:data.db");
             Statement stat = conn.createStatement();
             stat.executeUpdate("DROP TABLE IF EXISTS stats;");
-            stat.executeUpdate("CREATE TABLE stats (player, team, score);");
-            PreparedStatement prep = conn.prepareStatement("INSERT INTO stats VALUES (?, ?, ?);");
+            stat.executeUpdate("CREATE TABLE stats (player, team, pointsgame, totalpoints);");
+            PreparedStatement prep = conn.prepareStatement("INSERT INTO stats VALUES (?, ?, ?, ?);");
             for (ListEntry row : listFeed.getEntries()) {
                 prep.setString(1, row.getCustomElements().getValue("player"));
                 prep.setString(2, row.getCustomElements().getValue("team"));
-                prep.setString(3, row.getCustomElements().getValue("score"));
+                prep.setString(3, row.getCustomElements().getValue("pointsgame"));
+                prep.setString(4, row.getCustomElements().getValue("totalpoints"));
                 prep.addBatch();
             }
             conn.setAutoCommit(false);
             prep.executeBatch();
             conn.setAutoCommit(true);
 
-            conn.close();  
-            /*ListEntry row = new ListEntry();
-            row.getCustomElements().setValueLocal("bradybunch", "Joe");
-            service.setUserCredentials("sstdodgeball@gmail.com", "jerrychen");
-            WorksheetEntry ws = getWorkSheet("Test Sheet");
-            listFeedUrl = ws.getListFeedUrl();
-            System.out.println(listFeedUrl);
-            row = service.insert(listFeedUrl, row);*/
+            conn.close();
         } catch (Exception e) {e.printStackTrace();}
     }
     
-    public static ArrayList<ArrayList<String>> getData() {
-        ArrayList<ArrayList<String>> data = new ArrayList<>();
+    public static ArrayList<Object[]> getData() {
+        ArrayList<Object[]> data = new ArrayList<>();
         try {
             Connection conn = DriverManager.getConnection("jdbc:sqlite:data.db");
             Statement stat = conn.createStatement();
-            ResultSet rs = stat.executeQuery("SELECT * FROM stats;");
-            while (rs.next()) {
-                ArrayList<String> player = new ArrayList<>();
-                player.add(rs.getString("player"));
-                player.add(rs.getString("team"));
-                player.add(rs.getString("score"));
-                data.add(player);
+            if (conn.getMetaData().getTables(null, null, "stats", null).next()) {
+                ResultSet rs = stat.executeQuery("SELECT * FROM stats;");
+                while (rs.next()) {
+                    Object[] player = new Object[4];
+                    player[0] = rs.getString("player");
+                    player[1] = rs.getString("team");
+                    player[2] = rs.getDouble("pointsgame");
+                    player[3] = rs.getInt("totalpoints");
+                    data.add(player);
+                }
+                rs.close();
             }
-            rs.close();
             conn.close();
-        } catch (Exception e) {e.printStackTrace();}
+        } catch (SQLException e) {e.printStackTrace();}
         return data;
+    }
+    
+    public boolean authenticate(String pass) {
+        if (pass.equals("test123")) {
+            try {service.setUserCredentials("sstdodgeball@gmail.com", "jerrychen");}
+            catch (AuthenticationException e) {e.printStackTrace();}
+            return true;
+        } else {
+            return false;
+        }
     }
 }
