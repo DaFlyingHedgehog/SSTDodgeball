@@ -16,7 +16,7 @@ public class CurrentStandings extends Page {
     private LeaderboardModel model;
 
     private void fillTable() {
-        String[] columns = {"Player", "Team", "Points/Game", "Total Points"};
+        String[] columns = {"Player", "Team", "Points/Game", "Total Points", "Throws", "Hits", "Catches"};
         model = new LeaderboardModel(columns);
         standings.setModel(model);
         ArrayList<Object[]> data = SSTDodgeballStats.getData();
@@ -30,14 +30,11 @@ public class CurrentStandings extends Page {
      */
     public CurrentStandings() {
         initComponents();
-<<<<<<< HEAD
         String[] columns = {"Player", "Team", "Throws", "Hits", "Catches", "H-Out", "C-Out", "S-Bonus", 
             "Hit %", "Games", "Points/Games", "Total Points"};
         model = new LeaderboardModel(columns);
         standings.setModel(model);
-=======
         fillTable();
->>>>>>> origin/master
     }
 
     /**
