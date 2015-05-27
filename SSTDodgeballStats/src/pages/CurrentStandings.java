@@ -15,14 +15,22 @@ import java.util.ArrayList;
 public class CurrentStandings extends Page {
     private LeaderboardModel model;
 
+    private void fillTable() {
+        String[] columns = {"Player", "Team", "Points/Game", "Total Points"};
+        model = new LeaderboardModel(columns);
+        standings.setModel(model);
+        ArrayList<Object[]> data = SSTDodgeballStats.getData();
+        for (int i = 0; i < data.size(); i++) {
+            model.addPlayer(data.get(i));
+        }
+    }
+    
     /**
      * Creates new form CurrentStandings
      */
     public CurrentStandings() {
         initComponents();
-        String[] columns = {"Player", "Team", "Score"};
-        model = new LeaderboardModel(columns);
-        standings.setModel(model);
+        fillTable();
     }
 
     /**
@@ -115,11 +123,7 @@ public class CurrentStandings extends Page {
 
     private void syncButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_syncButtonActionPerformed
         SSTDodgeballStats.sync();
-        ArrayList<ArrayList<String>> data = SSTDodgeballStats.getData();
-        model.clear();
-        for (int i = 0; i < data.size(); i++) {
-            model.addPlayer(data.get(i).toArray());
-        }
+        fillTable();
     }//GEN-LAST:event_syncButtonActionPerformed
 
 
