@@ -5,31 +5,25 @@
  */
 package view;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import javax.swing.DefaultListModel;
-import model.DodgeballTableModel;
-import model.Controller;
-
 /**
+ * Schedule panel page.
  *
- * @author mama
+ * @author Nathan Ott and Fatih Ridha
  */
 public class Schedule extends javax.swing.JPanel {
-    private DefaultListModel listModel;
-    private DodgeballTableModel model1;
-    private DodgeballTableModel model2;
+
+    private javax.swing.DefaultListModel listModel;
+    private model.DodgeballTableModel tableModel1;
+    private model.DodgeballTableModel tableModel2;
 
     /**
-     * Creates new form CurrentStandings
+     * Creates new form Schedule.
      */
     public Schedule() {
         initComponents();
-        fillList();
-        fillTable();
+        fillMatches();
     }
 
-    public void setContainer (MainFrame container) {}
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -55,21 +49,11 @@ public class Schedule extends javax.swing.JPanel {
         menuButton.setText("Menu");
 
         syncButton.setText("Sync");
-        syncButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                syncButtonActionPerformed(evt);
-            }
-        });
 
         scheduleLabel.setFont(new java.awt.Font("Tahoma", 1, 48)); // NOI18N
         scheduleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         scheduleLabel.setText("Schedule");
 
-        matchList.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
-        });
         matchList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
                 matchListValueChanged(evt);
@@ -162,24 +146,40 @@ public class Schedule extends javax.swing.JPanel {
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
-    
-    private void fillList() {
-        ArrayList<HashMap<String, Object>> data = new ArrayList();
-        try {data = Controller.getData(1);}
-        catch (Exception e) {e.printStackTrace();}
-        listModel = new DefaultListModel();
-        for (HashMap<String, Object> match : data) {
-            String s = match.get("team1") + " vs " + match.get("team2") 
+
+    /**
+     * Event for when a match from matchList is selected. Populates team tables
+     * with info based on the selected match.
+     *
+     * @param evt
+     */
+    private void matchListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_matchListValueChanged
+        fillTeams();
+    }//GEN-LAST:event_matchListValueChanged
+
+    /**
+     * Populates matchList with match data from SQLite table "schedule".
+     */
+    public void fillMatches() {
+        java.util.ArrayList<java.util.HashMap<String, Object>> data = model.Controller.getData(1);
+        listModel = new javax.swing.DefaultListModel();
+        for (java.util.HashMap<String, Object> match : data) {
+            String s = match.get("team1") + " vs " + match.get("team2")
                     + " (" + match.get("date") + ")";
             listModel.addElement(s);
         }
         matchList.setModel(listModel);
+        fillTeams();
     }
-    
-    private void fillTable() {
+
+    /**
+     * Populates team tables with player data from SQLite table "matches" based
+     * on selected match from matchList.
+     */
+    private void fillTeams() {
         String[] columns = {"Player", "Throws", "Hits", "Catches", "Hit Out", "Caught Out", "Survivor"};
-        model1 = new DodgeballTableModel(columns);
-        model2 = new DodgeballTableModel(columns);
+        tableModel1 = new model.DodgeballTableModel(columns);
+        tableModel2 = new model.DodgeballTableModel(columns);
         team1Label.setText("Team 1");
         team2Label.setText("Team 2");
         double match = matchList.getSelectedIndex() + 1;
@@ -189,33 +189,23 @@ public class Schedule extends javax.swing.JPanel {
             team1Label.setText(team1);
             String team2 = selected.substring(selected.indexOf(" vs ") + 4, selected.indexOf(" ("));
             team2Label.setText(team2);
-            ArrayList<HashMap<String, Object>> dataSet = new ArrayList();
-            try {dataSet = Controller.getData(2);}
-            catch (Exception e) {e.printStackTrace();}
-            for (HashMap<String, Object> data : dataSet) {
+            java.util.ArrayList<java.util.HashMap<String, Object>> dataSet = model.Controller.getData(2);
+            for (java.util.HashMap<String, Object> data : dataSet) {
                 if (data.get("match").equals(match)) {
-                    HashMap<String, Object> clone = (HashMap)(data.clone());
+                    java.util.HashMap<String, Object> clone = (java.util.HashMap) (data.clone());
                     clone.remove("match");
                     clone.remove("team");
-                    if (data.get("team").equals(team1)) model1.addRow(clone.values().toArray());
-                    else if (data.get("team").equals(team2)) model2.addRow(clone.values().toArray());
+                    if (data.get("team").equals(team1)) {
+                        tableModel1.addRow(clone.values().toArray());
+                    } else if (data.get("team").equals(team2)) {
+                        tableModel2.addRow(clone.values().toArray());
+                    }
                 }
             }
         }
-        team1Table.setModel(model1);
-        team2Table.setModel(model2);
+        team1Table.setModel(tableModel1);
+        team2Table.setModel(tableModel2);
     }
-    
-    private void syncButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_syncButtonActionPerformed
-        try {Controller.sync();}
-        catch (Exception e) {e.printStackTrace();}
-        fillList();
-        fillTable();
-    }//GEN-LAST:event_syncButtonActionPerformed
-
-    private void matchListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_matchListValueChanged
-        fillTable();
-    }//GEN-LAST:event_matchListValueChanged
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -224,7 +214,7 @@ public class Schedule extends javax.swing.JPanel {
     private javax.swing.JScrollPane matchScroll;
     public javax.swing.JButton menuButton;
     private javax.swing.JLabel scheduleLabel;
-    private javax.swing.JButton syncButton;
+    public javax.swing.JButton syncButton;
     private javax.swing.JLabel team1Label;
     private javax.swing.JScrollPane team1Scroll;
     private javax.swing.JTable team1Table;

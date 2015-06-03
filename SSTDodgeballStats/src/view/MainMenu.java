@@ -6,18 +6,19 @@
 package view;
 
 /**
+ * Main Menu panel page.
  *
- * @author mama
+ * @author Nathan Ott and Fatih Ridha
  */
 public class MainMenu extends javax.swing.JPanel {
 
     /**
-     * Creates new form MainMenu
+     * Creates new form MainMenu.
      */
     public MainMenu() {
         initComponents();
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -27,17 +28,61 @@ public class MainMenu extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        passwordDialog = new javax.swing.JDialog();
+        passwordLabel = new javax.swing.JLabel();
+        passwordField = new javax.swing.JPasswordField();
+        confirmButton = new javax.swing.JButton();
         leaderboardButton = new javax.swing.JButton();
         recordStatsButton = new javax.swing.JButton();
         titleLabel = new javax.swing.JLabel();
         scheduleButton = new javax.swing.JButton();
+        uploadButton = new javax.swing.JButton();
+        syncButton = new javax.swing.JButton();
+
+        passwordDialog.setTitle("Enter password to upload online");
+
+        passwordLabel.setText("Password:");
+
+        confirmButton.setText("Confirm");
+        confirmButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                confirmButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout passwordDialogLayout = new javax.swing.GroupLayout(passwordDialog.getContentPane());
+        passwordDialog.getContentPane().setLayout(passwordDialogLayout);
+        passwordDialogLayout.setHorizontalGroup(
+            passwordDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(passwordDialogLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(passwordDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(passwordDialogLayout.createSequentialGroup()
+                        .addComponent(confirmButton, javax.swing.GroupLayout.DEFAULT_SIZE, 242, Short.MAX_VALUE)
+                        .addContainerGap())
+                    .addGroup(passwordDialogLayout.createSequentialGroup()
+                        .addComponent(passwordLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(passwordField)
+                        .addGap(10, 10, 10))))
+        );
+        passwordDialogLayout.setVerticalGroup(
+            passwordDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(passwordDialogLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(passwordDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(passwordLabel)
+                    .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(confirmButton)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
         setPreferredSize(new java.awt.Dimension(800, 600));
 
         leaderboardButton.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         leaderboardButton.setText("LEADERBOARD");
 
-        recordStatsButton.setBackground(new java.awt.Color(0, 255, 255));
         recordStatsButton.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         recordStatsButton.setText("RECORD STATS");
         recordStatsButton.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -49,6 +94,15 @@ public class MainMenu extends javax.swing.JPanel {
         scheduleButton.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         scheduleButton.setText("SCHEDULE");
 
+        uploadButton.setText("Upload");
+        uploadButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                uploadButtonActionPerformed(evt);
+            }
+        });
+
+        syncButton.setText("Sync");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -59,15 +113,23 @@ public class MainMenu extends javax.swing.JPanel {
                     .addComponent(scheduleButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(leaderboardButton, javax.swing.GroupLayout.DEFAULT_SIZE, 780, Short.MAX_VALUE)
                     .addComponent(titleLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(recordStatsButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(recordStatsButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(uploadButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(syncButton)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(uploadButton)
+                    .addComponent(syncButton))
+                .addGap(13, 13, 13)
                 .addComponent(titleLabel)
-                .addGap(42, 42, 42)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(leaderboardButton, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(scheduleButton, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -80,11 +142,32 @@ public class MainMenu extends javax.swing.JPanel {
 
     }// </editor-fold>//GEN-END:initComponents
 
+    private void uploadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uploadButtonActionPerformed
+        passwordDialog.pack();
+        passwordDialog.setVisible(true);
+    }//GEN-LAST:event_uploadButtonActionPerformed
+
+    private void confirmButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmButtonActionPerformed
+        if (!model.Controller.authenticate(String.valueOf(passwordField.getPassword()))) {
+            javax.swing.JOptionPane.showMessageDialog(null, "Incorrect password.");
+        } else {
+            model.Controller.uploadData();
+            javax.swing.JOptionPane.showMessageDialog(this, "Data uploaded.");
+            passwordDialog.dispose();
+        }
+    }//GEN-LAST:event_confirmButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton confirmButton;
     public javax.swing.JButton leaderboardButton;
+    private javax.swing.JDialog passwordDialog;
+    private javax.swing.JPasswordField passwordField;
+    private javax.swing.JLabel passwordLabel;
     public javax.swing.JButton recordStatsButton;
     public javax.swing.JButton scheduleButton;
+    public javax.swing.JButton syncButton;
     private javax.swing.JLabel titleLabel;
+    public javax.swing.JButton uploadButton;
     // End of variables declaration//GEN-END:variables
 }

@@ -5,20 +5,17 @@
  */
 package view;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import model.DodgeballTableModel;
-import model.Controller;
-
 /**
+ * Leaderboard panel page.
  *
  * @author mama
  */
 public class Leaderboard extends javax.swing.JPanel {
-    private DodgeballTableModel model;
-    
+
+    private model.DodgeballTableModel tableModel;
+
     /**
-     * Creates new form Leaderboard
+     * Creates new form Leaderboard.
      */
     public Leaderboard() {
         initComponents();
@@ -37,20 +34,15 @@ public class Leaderboard extends javax.swing.JPanel {
         menuButton = new javax.swing.JButton();
         syncButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        leaderboard = new javax.swing.JTable();
+        leaderboardTable = new javax.swing.JTable();
         leaderboardLabel = new javax.swing.JLabel();
 
         menuButton.setText("Menu");
 
         syncButton.setText("Sync");
-        syncButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                syncButtonActionPerformed(evt);
-            }
-        });
 
-        leaderboard.setAutoCreateRowSorter(true);
-        leaderboard.setModel(new javax.swing.table.DefaultTableModel(
+        leaderboardTable.setAutoCreateRowSorter(true);
+        leaderboardTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -58,8 +50,8 @@ public class Leaderboard extends javax.swing.JPanel {
 
             }
         ));
-        leaderboard.getTableHeader().setReorderingAllowed(false);
-        jScrollPane1.setViewportView(leaderboard);
+        leaderboardTable.getTableHeader().setReorderingAllowed(false);
+        jScrollPane1.setViewportView(leaderboardTable);
 
         leaderboardLabel.setFont(new java.awt.Font("Tahoma", 1, 48)); // NOI18N
         leaderboardLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -98,31 +90,26 @@ public class Leaderboard extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void fillTable() {
+    /**
+     * Populates leaderboardTable with data from SQLite table "leaderboard".
+     */
+    public void fillTable() {
         String[] columns = {"Player", "Team", "Throws", "Hits", "Catches", "H-Out", "C-Out",
-                            "S-Bonus", "Hit %", "Games", "Points/Games", "Total Points",};
-        model = new DodgeballTableModel(columns);
-        ArrayList<HashMap<String, Object>> data = new ArrayList();
-        try {data = Controller.getData(0);}
-        catch (Exception e) {e.printStackTrace();}
-        for (HashMap<String, Object> player : data) {
-            model.addRow(player.values().toArray());
+            "S-Bonus", "Hit %", "Games", "Points/Games", "Total Points",};
+        tableModel = new model.DodgeballTableModel(columns);
+        java.util.ArrayList<java.util.HashMap<String, Object>> data = model.Controller.getData(0);
+        for (java.util.HashMap<String, Object> player : data) {
+            tableModel.addRow(player.values().toArray());
         }
-        leaderboard.setModel(model);
+        leaderboardTable.setModel(tableModel);
     }
-    
-    private void syncButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_syncButtonActionPerformed
-        try {Controller.sync();}
-        catch (Exception e) {e.printStackTrace();}
-        fillTable();
-    }//GEN-LAST:event_syncButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable leaderboard;
     private javax.swing.JLabel leaderboardLabel;
+    private javax.swing.JTable leaderboardTable;
     public javax.swing.JButton menuButton;
-    private javax.swing.JButton syncButton;
+    public javax.swing.JButton syncButton;
     // End of variables declaration//GEN-END:variables
 }

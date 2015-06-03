@@ -5,19 +5,19 @@
  */
 package view;
 
-import java.awt.CardLayout;
-
 /**
+ * Main window frame for SSTDodgeballStats.
  *
- * @author mama
+ * @author Nathan Ott and Fatih Ridha
  */
 public class MainFrame extends javax.swing.JFrame {
 
     /**
-     * Creates new form MainFrame2
+     * Creates new form MainFrame.
      */
     public MainFrame() {
         initComponents();
+        setVisible(false);
     }
 
     /**
@@ -33,6 +33,7 @@ public class MainFrame extends javax.swing.JFrame {
         leaderboard = new view.Leaderboard();
         schedule = new view.Schedule();
         recordStats = new view.RecordStats();
+        recordMatch = new view.RecordMatch();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -41,25 +42,40 @@ public class MainFrame extends javax.swing.JFrame {
         mainMenu.setName("Main Menu"); // NOI18N
         mainMenu.leaderboardButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                leaderboardButtonActionPerformed(evt);
+                switchPage("Leaderboard");
             }
         });
         mainMenu.scheduleButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                scheduleButtonActionPerformed(evt);
+                switchPage("Schedule");
             }
         });
         mainMenu.recordStatsButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                recordStatsButtonActionPerformed(evt);
+                switchPage("Record Stats");
             }
+        });
+        mainMenu.syncButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                model.Controller.sync();
+                leaderboard.fillTable();
+                schedule.fillMatches();
+                recordStats.fillMatches();            }
         });
         getContentPane().add(mainMenu, "Main Menu");
 
         leaderboard.setName("Leaderboard"); // NOI18N
         leaderboard.menuButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuButtonActionPerformed(evt);
+                switchPage("Main Menu");
+            }
+        });
+        leaderboard.syncButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                model.Controller.sync();
+                leaderboard.fillTable();
+                schedule.fillMatches();
+                recordStats.fillMatches();
             }
         });
         getContentPane().add(leaderboard, "Leaderboard");
@@ -67,40 +83,76 @@ public class MainFrame extends javax.swing.JFrame {
         schedule.setName("Schedule"); // NOI18N
         schedule.menuButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuButtonActionPerformed(evt);
+                switchPage("Main Menu");
             }
+        });
+        schedule.syncButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                model.Controller.sync();
+                leaderboard.fillTable();
+                schedule.fillMatches();
+                recordStats.fillMatches();            }
         });
         getContentPane().add(schedule, "Schedule");
 
         recordStats.setName("Record Stats"); // NOI18N
         recordStats.menuButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuButtonActionPerformed(evt);
+                switchPage("Main Menu");
+            }
+        });
+        recordStats.recordMatchButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Object[] matchInfo = recordStats.getMatchInfo();
+                String[] players = recordStats.getPlayers();
+                recordMatch.prepareMatch((String) matchInfo[0], (String) matchInfo[1],
+                    (boolean) matchInfo[2], (String) matchInfo[3], players);
+                switchPage("Record Match");
+            }
+        });
+        recordStats.syncButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                model.Controller.sync();
+                leaderboard.fillTable();
+                schedule.fillMatches();
+                recordStats.fillMatches();
             }
         });
         getContentPane().add(recordStats, "Record Stats");
 
+        recordMatch.setName("Record Match"); // NOI18N
+        recordMatch.menuButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                recordMatchMenuButtonActionPerformed();
+            }
+        });
+        getContentPane().add(recordMatch, "Record Match");
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    public void switchPage(String page) {
-        CardLayout cl = (CardLayout)(getContentPane().getLayout());
+    /**
+     * Switches to the specified page. Page must be specified from each panel
+     * page's cardName property in MainFrame.
+     *
+     * @param page page to switch to; corresponds to panel page's cardName
+     * property
+     */
+    private void switchPage(String page) {
+        java.awt.CardLayout cl = (java.awt.CardLayout) (getContentPane().getLayout());
         cl.show(getContentPane(), page);
     }
-    
-    private void leaderboardButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        switchPage("Leaderboard");
-    }
-    
-    private void scheduleButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        switchPage("Schedule");
-    }
-    
-    private void recordStatsButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        switchPage("Record Stats");
-    }
-    
-    private void menuButtonActionPerformed(java.awt.event.ActionEvent evt) {
+
+    private void recordMatchMenuButtonActionPerformed() {
+        getContentPane().remove(recordMatch);
+        recordMatch = new RecordMatch();
+        recordMatch.setName("Record Match");
+        recordMatch.menuButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                recordMatchMenuButtonActionPerformed();
+            }
+        });
+        getContentPane().add(recordMatch, "Record Match");
         switchPage("Main Menu");
     }
     
@@ -144,6 +196,7 @@ public class MainFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private view.Leaderboard leaderboard;
     private view.MainMenu mainMenu;
+    private view.RecordMatch recordMatch;
     private view.RecordStats recordStats;
     private view.Schedule schedule;
     // End of variables declaration//GEN-END:variables

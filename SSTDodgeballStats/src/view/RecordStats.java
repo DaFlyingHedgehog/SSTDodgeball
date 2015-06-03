@@ -6,20 +6,23 @@
 package view;
 
 /**
+ * Record Stats panel page.
  *
- * @author mama
+ * @author Nathan Ott and Fatih Ridha
  */
 public class RecordStats extends javax.swing.JPanel {
 
-    /**
-     * Creates new form RecordStats
-     */
+    private javax.swing.DefaultListModel matchesModel;
+    private javax.swing.DefaultListModel playersModel;
 
+    /**
+     * Creates new form RecordStats.
+     */
     public RecordStats() {
         initComponents();
+        fillMatches();
     }
 
-    public void setContainer (MainFrame container) {}
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -29,30 +32,126 @@ public class RecordStats extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        teamsButtonGroup = new javax.swing.ButtonGroup();
         menuButton = new javax.swing.JButton();
-        newMatchButton = new javax.swing.JButton();
-        matches = new javax.swing.JComboBox();
-        jLabel1 = new javax.swing.JLabel();
-        recordButton = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList();
+        recordStatsLabel = new javax.swing.JLabel();
+        matchesLabel = new javax.swing.JLabel();
+        matchScroll = new javax.swing.JScrollPane();
+        matchList = new javax.swing.JList();
+        teamLabel = new javax.swing.JLabel();
+        playersScroll = new javax.swing.JScrollPane();
+        playersList = new javax.swing.JList();
+        playersLabel = new javax.swing.JLabel();
+        syncButton = new javax.swing.JButton();
+        removePlayerButton = new javax.swing.JButton();
+        newPlayerButton = new javax.swing.JButton();
+        newPlayerText = new javax.swing.JTextField();
+        dateLabel = new javax.swing.JLabel();
+        currentDateButton = new javax.swing.JButton();
+        recordMatchButton = new javax.swing.JButton();
+        team1RadioButton = new javax.swing.JRadioButton();
+        team2RadioButton = new javax.swing.JRadioButton();
+        team1TextField = new javax.swing.JTextField();
+        team2TextField = new javax.swing.JTextField();
+        dateSpinner = new javax.swing.JSpinner();
 
         menuButton.setText("Menu");
 
-        newMatchButton.setText("New Match");
+        recordStatsLabel.setFont(new java.awt.Font("Tahoma", 1, 48)); // NOI18N
+        recordStatsLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        recordStatsLabel.setText("Record Stats");
 
-        matches.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        matchesLabel.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        matchesLabel.setText("Matches");
 
-        jLabel1.setText("Record an upcoming match:");
-
-        recordButton.setText("Record");
-
-        jList1.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
+        matchList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                matchListValueChanged(evt);
+            }
         });
-        jScrollPane1.setViewportView(jList1);
+        matchScroll.setViewportView(matchList);
+
+        teamLabel.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        teamLabel.setText("Team");
+
+        playersScroll.setViewportView(playersList);
+
+        playersLabel.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        playersLabel.setText("Players");
+
+        syncButton.setText("Sync");
+
+        removePlayerButton.setText("Remove Player(s)");
+        removePlayerButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removePlayerButtonActionPerformed(evt);
+            }
+        });
+
+        newPlayerButton.setText("New Player");
+        newPlayerButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newPlayerButtonActionPerformed(evt);
+            }
+        });
+
+        dateLabel.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        dateLabel.setText("Date:");
+
+        currentDateButton.setText("Current Date");
+        currentDateButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                currentDateButtonActionPerformed(evt);
+            }
+        });
+
+        recordMatchButton.setFont(new java.awt.Font("Tahoma", 1, 48)); // NOI18N
+        recordMatchButton.setText("Record Match");
+        recordMatchButton.setEnabled(false);
+
+        teamsButtonGroup.add(team1RadioButton);
+        team1RadioButton.setSelected(true);
+        team1RadioButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                team1RadioButtonActionPerformed(evt);
+            }
+        });
+
+        teamsButtonGroup.add(team2RadioButton);
+        team2RadioButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                team2RadioButtonActionPerformed(evt);
+            }
+        });
+
+        team1TextField.setText("Team 1");
+        team1TextField.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+            public void insertUpdate(javax.swing.event.DocumentEvent e) {
+                fillPlayers();
+            }
+
+            public void removeUpdate(javax.swing.event.DocumentEvent e) {
+                fillPlayers();
+            }
+
+            public void changedUpdate(javax.swing.event.DocumentEvent e){}
+        });
+
+        team2TextField.setText("Team 2");
+        team2TextField.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+            public void insertUpdate(javax.swing.event.DocumentEvent e) {
+                fillPlayers();
+            }
+
+            public void removeUpdate(javax.swing.event.DocumentEvent e) {
+                fillPlayers();
+            }
+
+            public void changedUpdate(javax.swing.event.DocumentEvent e){}
+        });
+
+        dateSpinner.setModel(new javax.swing.SpinnerDateModel());
+        dateSpinner.setEditor(new javax.swing.JSpinner.DateEditor(dateSpinner, "MMMM d, yyyy"));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -61,54 +160,255 @@ public class RecordStats extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(recordStatsLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(matchesLabel)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(matchScroll, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(newPlayerButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(newPlayerText, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(removePlayerButton))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(dateLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(dateSpinner)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(currentDateButton))
+                            .addComponent(recordMatchButton, javax.swing.GroupLayout.DEFAULT_SIZE, 390, Short.MAX_VALUE)
+                            .addComponent(playersScroll)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(teamLabel)
+                                    .addComponent(playersLabel))
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(team1RadioButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(team1TextField, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(team2RadioButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(team2TextField))))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(menuButton)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(newMatchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(61, 61, 61)
-                                .addComponent(recordButton)
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 433, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(matches, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jScrollPane1))
-                                .addGap(34, 34, 34))))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(syncButton)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(menuButton)
+                    .addComponent(syncButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(recordStatsLabel)
+                .addGap(18, 18, 18)
+                .addComponent(matchesLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(matchScroll)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(menuButton)
+                        .addComponent(teamLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(newMatchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(45, 45, 45)
-                        .addComponent(jLabel1)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(team2RadioButton, javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(team1RadioButton))
+                            .addComponent(team1TextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(team2TextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(19, 19, 19)
+                        .addComponent(playersLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(playersScroll, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(removePlayerButton)
+                            .addComponent(newPlayerButton)
+                            .addComponent(newPlayerText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
-                        .addComponent(matches, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(dateLabel)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(currentDateButton)
+                                .addComponent(dateSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(18, 18, 18)
-                        .addComponent(recordButton)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(recordMatchButton, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)))
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Event for when a match from matchList is selected. Gets both teams from
+     * selected match and populates playersList with one of the team's players.
+     *
+     * @param evt
+     */
+    private void matchListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_matchListValueChanged
+        fillTeams();
+    }//GEN-LAST:event_matchListValueChanged
+
+    /**
+     * Click event for "New Player" button. Adds a player to the team list.
+     *
+     * @param evt
+     */
+    private void newPlayerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newPlayerButtonActionPerformed
+        if (!newPlayerText.getText().equals("")) {
+            playersModel.addElement(newPlayerText.getText());
+            playersList.setModel(playersModel);
+            newPlayerText.setText("");
+        }
+    }//GEN-LAST:event_newPlayerButtonActionPerformed
+
+    /**
+     * Click event for "Remove Player" button. Removes a selected player from
+     * the team list.
+     *
+     * @param evt
+     */
+    private void removePlayerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removePlayerButtonActionPerformed
+        if (playersList.getSelectedIndex() != -1) {
+            playersModel.remove(playersList.getSelectedIndex());
+            playersList.setModel(playersModel);
+        }
+    }//GEN-LAST:event_removePlayerButtonActionPerformed
+
+    /**
+     * Click event for "Current Date" button. Sets dateSpinner to the current
+     * date.
+     *
+     * @param evt
+     */
+    private void currentDateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_currentDateButtonActionPerformed
+        dateSpinner.setValue(new java.util.Date());
+    }//GEN-LAST:event_currentDateButtonActionPerformed
+
+    /**
+     * Click event for "Team 1" radio button. Populates team list with team 1's
+     * players.
+     *
+     * @param evt
+     */
+    private void team1RadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_team1RadioButtonActionPerformed
+        fillPlayers();
+    }//GEN-LAST:event_team1RadioButtonActionPerformed
+
+    /**
+     * Click event for "Team 2" radio button. Populates team list with team 2's
+     * players.
+     *
+     * @param evt
+     */
+    private void team2RadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_team2RadioButtonActionPerformed
+        fillPlayers();
+    }//GEN-LAST:event_team2RadioButtonActionPerformed
+
+    /**
+     * Populates matchList with match data from SQLite table "schedule".
+     */
+    public void fillMatches() {
+        java.util.ArrayList<java.util.HashMap<String, Object>> data = model.Controller.getData(1);
+        matchesModel = new javax.swing.DefaultListModel();
+        for (java.util.HashMap<String, Object> match : data) {
+            String s = match.get("team1") + " vs " + match.get("team2")
+                    + " (" + match.get("date") + ")";
+            matchesModel.addElement(s);
+        }
+        matchList.setModel(matchesModel);
+        fillTeams();
+    }
+
+    /**
+     * Sets team names based on the selected match from matchList.
+     */
+    private void fillTeams() {
+        if (matchList.getSelectedIndex() != -1) {
+            String selected = matchList.getSelectedValue().toString();
+            team1TextField.setText(selected.substring(0, selected.indexOf(" vs ")));
+            team2TextField.setText(selected.substring(selected.indexOf(" vs ") + 4, selected.indexOf(" (")));
+            try {dateSpinner.setValue(new java.text.SimpleDateFormat("M/d/yyyy").parse(selected.substring(selected.indexOf("(") + 1, selected.length())));}
+            catch (java.text.ParseException e) {e.printStackTrace();}
+        }
+        fillPlayers();
+    }
+
+    /**
+     * Populates playersList from SQLite table "leaderboard" based on selected
+     * team via radio button and text field.
+     */
+    private void fillPlayers() {
+        java.util.ArrayList<java.util.HashMap<String, Object>> data = model.Controller.getData(0);
+        playersModel = new javax.swing.DefaultListModel();
+        String team = "";
+        if (team1RadioButton.isSelected()) {
+            team = team1TextField.getText();
+        } else if (team2RadioButton.isSelected()) {
+            team = team2TextField.getText();
+        }
+        for (java.util.HashMap<String, Object> player : data) {
+            if (player.get("team").equals(team)) {
+                playersModel.addElement(player.get("player"));
+            }
+        }
+        playersList.setModel(playersModel);
+        recordMatchButton.setEnabled(playersModel.size() > 0);
+    }
+
+    /**
+     * Returns both team names, whether to record team 1 or 2, and the date.
+     *
+     * @return array of the match info
+     */
+    public Object[] getMatchInfo() {
+        Object[] matchInfo = new Object[4];
+        matchInfo[0] = team1TextField.getText();
+        matchInfo[1] = team2TextField.getText();
+        matchInfo[2] = team1RadioButton.isSelected();
+        matchInfo[3] = new java.text.SimpleDateFormat("MMMM dd, yyyy")
+                .format((java.util.Date) (dateSpinner.getValue()));
+        return matchInfo;
+    }
+
+    /**
+     * Returns selected players' names.
+     *
+     * @return array of player names
+     */
+    public String[] getPlayers() {
+        Object[] players = playersModel.toArray();
+        return java.util.Arrays.copyOf(players, players.length, String[].class);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JList jList1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JComboBox matches;
+    private javax.swing.JButton currentDateButton;
+    private javax.swing.JLabel dateLabel;
+    private javax.swing.JSpinner dateSpinner;
+    private javax.swing.JList matchList;
+    private javax.swing.JScrollPane matchScroll;
+    private javax.swing.JLabel matchesLabel;
     public javax.swing.JButton menuButton;
-    private javax.swing.JButton newMatchButton;
-    private javax.swing.JButton recordButton;
+    private javax.swing.JButton newPlayerButton;
+    private javax.swing.JTextField newPlayerText;
+    private javax.swing.JLabel playersLabel;
+    private javax.swing.JList playersList;
+    private javax.swing.JScrollPane playersScroll;
+    public javax.swing.JButton recordMatchButton;
+    private javax.swing.JLabel recordStatsLabel;
+    private javax.swing.JButton removePlayerButton;
+    public javax.swing.JButton syncButton;
+    private javax.swing.JRadioButton team1RadioButton;
+    private javax.swing.JTextField team1TextField;
+    private javax.swing.JRadioButton team2RadioButton;
+    private javax.swing.JTextField team2TextField;
+    private javax.swing.JLabel teamLabel;
+    private javax.swing.ButtonGroup teamsButtonGroup;
     // End of variables declaration//GEN-END:variables
 }

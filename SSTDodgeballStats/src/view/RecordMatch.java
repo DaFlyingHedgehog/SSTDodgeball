@@ -6,16 +6,37 @@
 package view;
 
 /**
+ * Record Match panel page.
  *
- * @author mama
+ * @author Nathan Ott and Fatih Ridha
  */
 public class RecordMatch extends javax.swing.JPanel {
 
+    private boolean matchPlayed;
+    private javax.swing.Timer timer;
+    private int time = 10;
+
     /**
-     * Creates new form RecordMatch
+     * Creates new form RecordMatch. Sets up a timer that runs at an interval of
+     * 1 second to decrement the time until time 0, when the match has ended and
+     * data is ready to store.
      */
     public RecordMatch() {
         initComponents();
+        timer = new javax.swing.Timer(1000, new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                timeLabel.setText("Time: " + time + " seconds");
+                if (time == 0) {
+                    setMatchEnabled(false);
+                    storeDataButton.setEnabled(true);
+                    toggleMatch.setEnabled(false);
+                    timer.stop();
+                } else {
+                    time--;
+                    timer.start();
+                }
+            }
+        });
     }
 
     /**
@@ -27,24 +48,84 @@ public class RecordMatch extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
+        menuButton = new javax.swing.JButton();
+        vsLabel = new javax.swing.JLabel();
+        team1Label = new javax.swing.JLabel();
+        team2Label = new javax.swing.JLabel();
+        nameLabel = new javax.swing.JLabel();
+        survivorLabel = new javax.swing.JLabel();
+        hitOutLabel = new javax.swing.JLabel();
+        caughtOutLabel = new javax.swing.JLabel();
+        catchesLabel = new javax.swing.JLabel();
+        hitsLabel = new javax.swing.JLabel();
+        throwsLabel = new javax.swing.JLabel();
+        player1 = new view.Player();
+        player2 = new view.Player();
+        player3 = new view.Player();
+        player4 = new view.Player();
+        player5 = new view.Player();
+        timeLabel = new javax.swing.JLabel();
+        toggleMatch = new javax.swing.JButton();
+        storeDataButton = new javax.swing.JButton();
+        dateLabel = new javax.swing.JLabel();
 
-        jLabel1.setText("Match No.");
+        menuButton.setText("Menu");
 
-        jLabel2.setText("Team 1");
+        vsLabel.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        vsLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        vsLabel.setText(" vs ");
 
-        jLabel3.setText("vs.");
+        team1Label.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        team1Label.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        team1Label.setText("Team 1");
 
-        jLabel4.setText("Team 2");
+        team2Label.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        team2Label.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        team2Label.setText("Team 2");
 
-        jLabel5.setText("Time: ");
+        nameLabel.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        nameLabel.setText("Name");
 
-        jLabel6.setText("jLabel6");
+        survivorLabel.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        survivorLabel.setText("Survivor");
+
+        hitOutLabel.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        hitOutLabel.setText("Hit Out");
+
+        caughtOutLabel.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        caughtOutLabel.setText("Caught Out");
+
+        catchesLabel.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        catchesLabel.setText("Catches");
+
+        hitsLabel.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        hitsLabel.setText("Hits");
+
+        throwsLabel.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        throwsLabel.setText("Throws");
+
+        timeLabel.setFont(new java.awt.Font("Tahoma", 1, 48)); // NOI18N
+        timeLabel.setText("Time: " + time + " seconds");
+
+        toggleMatch.setFont(new java.awt.Font("Tahoma", 1, 48)); // NOI18N
+        toggleMatch.setText("START");
+        toggleMatch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                toggleMatchActionPerformed(evt);
+            }
+        });
+
+        storeDataButton.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
+        storeDataButton.setText("Store Data");
+        storeDataButton.setEnabled(false);
+        storeDataButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                storeDataButtonActionPerformed(evt);
+            }
+        });
+
+        dateLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        dateLabel.setText("Date");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -52,46 +133,249 @@ public class RecordMatch extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel5)
-                .addGap(26, 26, 26))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(64, 64, 64)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel6)
-                    .addComponent(jLabel2))
-                .addGap(82, 82, 82)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 87, Short.MAX_VALUE)
-                .addComponent(jLabel4)
-                .addGap(82, 82, 82))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(team1Label, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(vsLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(team2Label, javax.swing.GroupLayout.PREFERRED_SIZE, 364, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(87, 87, 87)
+                        .addComponent(nameLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(throwsLabel)
+                        .addGap(18, 18, 18)
+                        .addComponent(hitsLabel)
+                        .addGap(18, 18, 18)
+                        .addComponent(catchesLabel)
+                        .addGap(18, 18, 18)
+                        .addComponent(caughtOutLabel)
+                        .addGap(18, 18, 18)
+                        .addComponent(hitOutLabel)
+                        .addGap(18, 18, 18)
+                        .addComponent(survivorLabel))
+                    .addComponent(player1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(player2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(player3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(player4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(player5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(timeLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(toggleMatch))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(menuButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(dateLabel))
+                    .addComponent(storeDataButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel5))
+                    .addComponent(menuButton)
+                    .addComponent(dateLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(vsLabel)
+                        .addComponent(team2Label))
+                    .addComponent(team1Label))
                 .addGap(18, 18, 18)
-                .addComponent(jLabel6)
-                .addContainerGap(223, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(nameLabel)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(survivorLabel)
+                        .addComponent(hitOutLabel)
+                        .addComponent(caughtOutLabel)
+                        .addComponent(catchesLabel)
+                        .addComponent(hitsLabel)
+                        .addComponent(throwsLabel)))
+                .addGap(18, 18, 18)
+                .addComponent(player1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(player2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(player3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(player4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(player5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(timeLabel)
+                    .addComponent(toggleMatch))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
+                .addComponent(storeDataButton)
+                .addContainerGap())
         );
+
+        player1.setVisible(false);
+        player2.setVisible(false);
+        player3.setVisible(false);
+        player4.setVisible(false);
+        player5.setVisible(false);
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Click event for "START"/"PAUSE"/"RESUME" button. Toggles state of the
+     * match and appropriately starting/pausing/resuming the timer.
+     *
+     * @param evt
+     */
+    private void toggleMatchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toggleMatchActionPerformed
+        if (!timer.isRunning()) {
+            setMatchEnabled(true);
+            timer.start();
+            toggleMatch.setText("PAUSE");
+        } else {
+            setMatchEnabled(false);
+            timer.stop();
+            toggleMatch.setText("RESUME");
+        }
+    }//GEN-LAST:event_toggleMatchActionPerformed
+
+    /**
+     * Click event for "Store Data" button. Stores players' data into SQLite
+     * table "matches" and disables button to prevent duplicate storage.
+     *
+     * @param evt
+     */
+    private void storeDataButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_storeDataButtonActionPerformed
+        java.util.ArrayList<java.util.HashMap<String, Object>> data = model.Controller.getData(1);
+        int matchNo = 0;
+        java.text.SimpleDateFormat parser = new java.text.SimpleDateFormat("MMMM dd, yyyy");
+        java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat("M/d/yyyy");
+        String date = "";
+        try { date = formatter.format(parser.parse(dateLabel.getText()));}
+        catch (java.text.ParseException e) {e.printStackTrace();}
+        System.out.println(date);
+        for (java.util.HashMap<String, Object> match : data) {
+            matchNo = (int) (Double.parseDouble(match.get("match").toString()));
+            System.out.println(match);
+            System.out.println(team1Label.getText());
+            System.out.println(team2Label.getText());
+            if (match.get("team1").equals(team1Label.getText())
+                    && match.get("team2").equals(team2Label.getText())
+                    && match.get("date").equals(date)) {
+                matchNo--;
+                break;
+            }
+        }
+        matchNo++;
+
+        data = new java.util.ArrayList();
+        data.add(getPlayerStats(player1, matchNo));
+        data.add(getPlayerStats(player2, matchNo));
+        data.add(getPlayerStats(player3, matchNo));
+        data.add(getPlayerStats(player4, matchNo));
+        data.add(getPlayerStats(player5, matchNo));
+
+        model.Controller.storeData("matches", data);
+        storeDataButton.setEnabled(false);
+    }//GEN-LAST:event_storeDataButtonActionPerformed
+
+    /**
+     * Sets whether the match has started or not/has paused.
+     *
+     * @param enabled
+     */
+    private void setMatchEnabled(boolean enabled) {
+        player1.setMatchEnabled(enabled);
+        player2.setMatchEnabled(enabled);
+        player3.setMatchEnabled(enabled);
+        player4.setMatchEnabled(enabled);
+        player5.setMatchEnabled(enabled);
+    }
+
+    /**
+     * Prepares match recording based on preset info.
+     *
+     * @param team1 team 1 name
+     * @param team2 team 2 name
+     * @param record1 whether to record team 1 or team 2
+     * @param date match date
+     * @param players names of players to record
+     */
+    public void prepareMatch(String team1, String team2, boolean record1, String date, String[] players) {
+        team1Label.setText(team1);
+        team2Label.setText(team2);
+        if (record1) {
+            team1Label.setForeground(java.awt.Color.red);
+        } else {
+            team2Label.setForeground(java.awt.Color.red);
+        }
+        dateLabel.setText(date);
+        if (players.length >= 1) {
+            preparePlayer(player1, players[0]);
+        }
+        if (players.length >= 2) {
+            preparePlayer(player2, players[1]);
+        }
+        if (players.length >= 3) {
+            preparePlayer(player3, players[2]);
+        }
+        if (players.length >= 4) {
+            preparePlayer(player4, players[3]);
+        }
+        if (players.length >= 5) {
+            preparePlayer(player5, players[4]);
+        }
+    }
+
+    /**
+     * Prepares individual player with preset info.
+     *
+     * @param player Player object to prepare
+     * @param name player name
+     */
+    private void preparePlayer(view.Player player, String name) {
+        player.setVisible(true);
+        player.setPlayerName(name);
+    }
+
+    /**
+     * Returns individual player stats for the given match.
+     *
+     * @param player player name
+     * @param match match number
+     * @return HashMap of player stats
+     */
+    private java.util.HashMap<String, Object> getPlayerStats(view.Player player, int match) {
+        java.util.HashMap<String, Object> stats = player.getStats();
+        stats.put("match", match);
+        if (team1Label.getForeground().equals(java.awt.Color.red)) {
+            stats.put("team", team1Label.getText());
+        } else {
+            stats.put("team", team2Label.getText());
+        }
+        System.out.println(stats);
+        return stats;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel catchesLabel;
+    private javax.swing.JLabel caughtOutLabel;
+    private javax.swing.JLabel dateLabel;
+    private javax.swing.JLabel hitOutLabel;
+    private javax.swing.JLabel hitsLabel;
+    public javax.swing.JButton menuButton;
+    private javax.swing.JLabel nameLabel;
+    private view.Player player1;
+    private view.Player player2;
+    private view.Player player3;
+    private view.Player player4;
+    private view.Player player5;
+    private javax.swing.JButton storeDataButton;
+    private javax.swing.JLabel survivorLabel;
+    private javax.swing.JLabel team1Label;
+    private javax.swing.JLabel team2Label;
+    private javax.swing.JLabel throwsLabel;
+    private javax.swing.JLabel timeLabel;
+    private javax.swing.JButton toggleMatch;
+    private javax.swing.JLabel vsLabel;
     // End of variables declaration//GEN-END:variables
 }
